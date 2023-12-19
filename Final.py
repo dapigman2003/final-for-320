@@ -2,7 +2,7 @@
 Name:       Christian Savastano
 CS230:      Section 5
 Data:       Trash Schedule by Address
-URL:        Link to your web application on Streamlit Cloud (if posted)
+URL:        https://final-for-320-gpeysfy6wevbyeemmr4vlz.streamlit.app/
 
 Description:
 
@@ -122,7 +122,6 @@ deck = pdk.Deck(
     initial_view_state=initial_state,
     layers=scatter_layer,
 )
-st.pydeck_chart(deck)
 
 
 #most common
@@ -132,10 +131,6 @@ try:
     st.write(f"The most common trash day day combo in the filtered data is: {most_common_initial}")
 except IndexError:
     st.write("No data available.")
-
-#csv
-st.subheader("Filtered Data")
-st.dataframe(filtered_df[["full_address", "mailing_neighborhood", "zip_code", "recollect", "trashday"]])
 
 
 #try is the easiest way to prevent errors when everything is deselected
@@ -166,8 +161,11 @@ try:
     #needed to add reindex to make the colormapping work if certain days werent in selected data (eg only boston has MF)
     df_counts = df_counts.reindex(columns=possible_initials + ['Mailing Neighborhood']).fillna(0)
     counts_graph = df_counts.plot(x='Mailing Neighborhood', kind='bar', stacked=True, colormap=plt.colors.ListedColormap([np.array(color_mapping[day])/255 for day in color_mapping.keys()]), title='Area and Day Combo Frequency')
-
+    #frequency area + day
     st.pyplot(counts_graph.figure)
+
+    #map
+    st.pydeck_chart(deck)
 
     # pie chart 1
     PWD_list, PWD_dict = unique_values_and_counts(filtered_df, "pwd_district")
@@ -191,6 +189,9 @@ try:
     recol_qualities.set_title("Recollection Frequency")
     st.pyplot(recol_chart)
 
+    # csv
+    st.subheader("Filtered Data")
+    st.dataframe(filtered_df[["full_address", "mailing_neighborhood", "zip_code", "recollect", "trashday"]])
 
 
 except:
