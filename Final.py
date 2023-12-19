@@ -15,6 +15,7 @@ import pandas as pd
 import pydeck as pdk
 import matplotlib as plt
 import numpy as np
+import openpyxl
 
 st.markdown(
     """
@@ -42,7 +43,7 @@ def unique_values_and_counts(dataframe, column_name):
 
 
 
-all_data = pd.read_csv('TrashData.csv')
+all_data = pd.read_excel('trashschedulesbyaddress_7000_sample.xlsx')
 #2 zip codes are missing from the dataset
 all_data['zip_code'].fillna('00000', inplace=True)
 all_data['zip_code'] = all_data['zip_code'].apply(lambda x: '{:05d}'.format(int(x)))
